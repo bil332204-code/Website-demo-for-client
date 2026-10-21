@@ -93,3 +93,9 @@ Public verification completed on `https://samp-ventures.onrender.com`:
 - A live browser loaded the homepage and 3D canvas, opened the consultation dialog, and exercised mobile navigation with no page errors or horizontal overflow. Browser requests used Playwright's Node request context with the environment's supplied trusted CA because Chromium's own store lacked the proxy CA. TLS verification stayed enabled.
 
 The custom domains are not yet ready over HTTPS: repeated public checks returned an upstream TLS-handshake failure (HTTP 503 from the egress proxy), despite verified DNS. Render automatically provisions certificates after verification, but successful custom-domain HTTPS has not yet been observed. Leave the verified DNS records unchanged while provisioning completes. Recheck apex `/api/health` and the `www` redirect before claiming custom-domain readiness.
+
+## Custom domain HTTPS active; SAMP motion update
+
+The custom domain is now operational: `https://sampventures.tech/api/health` returns 200, the homepage loads over HTTPS, and `https://www.sampventures.tech/` redirects to the apex. The previous certificate-provisioning limitation is resolved.
+
+The client clarified the display name is **SAMP**. The motion update includes moving images, pointer depth, scan overlays, layered atmospheric effects, orbital trails, floating research elements, a moving typography band, scroll choreography, and motion controls. Local production-build validation passes all 14 browser checks across eleven viewport widths, including an unrevealed-animation resize regression from laptop to phone. Hosting remains on the free plan without a persistent disk; SMTP remains disabled pending credentials.

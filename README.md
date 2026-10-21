@@ -39,7 +39,7 @@ SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=bil332204@gmail.com
 SMTP_PASSWORD=YOUR_GOOGLE_APP_PASSWORD
-MAIL_FROM=SAMP Ventures <bil332204@gmail.com>
+MAIL_FROM=SAMP <bil332204@gmail.com>
 INQUIRY_TO=contact@sampventure.com
 ```
 
@@ -75,7 +75,7 @@ npm run build
 npm test          # 14 browser checks against an isolated full-stack server
 ```
 
-The browser suite starts its own server with temporary data, a random administrator token, and disabled notifications, then removes the data. It covers real form submission, failure recovery, idempotent retry, admin sign-in/search/status/deletion, all nine service panels, navigation, image loading, reduced motion, and six viewport widths. It uses `/usr/bin/chromium`; override `CHROMIUM_PATH` if needed. `TEST_BASE_URL` optionally targets an existing instance but skips admin checks that require the isolated test token; this mode writes a test inquiry and should not target production.
+The browser suite starts its own server with temporary data, a random administrator token, and disabled notifications, then removes the data. It covers real form submission, failure recovery, idempotent retry, admin sign-in/search/status/deletion, all nine service panels, navigation, image loading, reduced motion, and eleven viewport widths. It uses `/usr/bin/chromium`; override `CHROMIUM_PATH` if needed. `TEST_BASE_URL` optionally targets an existing instance but skips admin checks that require the isolated test token; this mode writes a test inquiry and should not target production.
 
 ## API
 

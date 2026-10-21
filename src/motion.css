@@ -90,3 +90,6 @@ html[data-motion=off] .image-scan,html[data-motion=off] .research-pulse,html[dat
 @media(min-width:801px){.hero{height:auto;min-height:900px;padding-bottom:125px}}
 @media(min-width:601px) and (max-width:800px){.hero{min-height:850px;padding-bottom:120px}}
 .hero-art{pointer-events:none}.hero-bottom{z-index:5}
+/* Contain offscreen reveal positions before they enter the viewport. */
+#main{overflow-x:clip}
+@supports not (overflow:clip){#main{overflow-x:hidden}}
