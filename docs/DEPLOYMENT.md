@@ -55,3 +55,11 @@ The production Docker image was built successfully in this cloud environment. `n
 For managed deployment, Render is the recommended host. A personal `RENDER_API_KEY` requirement has been added to cloud environment settings, scoped to HTTPS requests to `api.render.com`. Create a Render account and key, then supply it in the secure settings field—not chat. The key permits account API actions, so use an account you control and revoke it when no longer needed. This does not create a service, authorize charges, or publish a live site. Choose between a temporary free demo with ephemeral inquiry storage and a separately priced persistent-storage plan before provisioning.
 
 In this restricted cloud build, existing network proxy routing and its trusted CA were supplied to Docker using standard build arguments and a BuildKit secret mount. Verification remained enabled; credentials and proxy certificates were not copied into the runtime image. A normal hosting builder with standard registry access can use the plain docker build command above.
+
+## Deployment attempt: 21 October 2026
+
+- Source is published on `main` at `bil332204-code/Website-demo-for-client`.
+- Render API authentication works and the supplied workspace ID was used.
+- Creating a Docker web service with `plan: free` was rejected with HTTP 402: Render requires payment information at `https://dashboard.render.com/billing`.
+- No SAMP service was created. No public URL, custom-domain verification, or DNS targets have been provisioned.
+- The account owner must satisfy Render's billing prerequisite directly before this deployment can continue. No paid plan has been selected or authorized.
