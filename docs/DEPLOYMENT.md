@@ -119,3 +119,12 @@ Verification covers the production container, all 16 API tests, eight direct pag
 Result: production build, all 18 browser checks, all 16 API checks, and the production container validation pass.
 
 Live verification identified browser transition-abort errors with cross-document View Transitions during intercepted navigation. The effect now uses a CSS page-entry fade with existing GSAP heading choreography, which also avoids transition-abort promises on unsupported or interrupted navigations.
+
+
+## Engineering motion backgrounds from client references
+
+Replaced the abstract surfaces with original procedural mechanical scenes: a meshing steel/red gear train on Home, solid/wireframe CAD on Expertise, a rotating nut tightening onto a threaded bolt on Approach, a moving CNC cutter on R&D, exploded mechanical assemblies on About, CAD-to-solid views on Learning, a sketch/layer-to-part prototype on Products, and a fastener/gear combination on Contact. Blueprint grids, dimension lines, and section labels sit behind the parts. The original page structure, inquiry API, motion control, and responsive layout remain in place.
+
+Three geometry/motion checks cover inverse gear ratios, thread-pitch travel, toolpath closure, and prototype growth. The functional browser checks pause the background after checking playback so software rendering does not dominate unrelated form and layout checks.
+
+Validation result: production build, all 18 browser checks, and all three mechanical-motion checks pass. Focused rendered-frame checks pass for tightening, machining, and prototype growth, with mobile framing and no page errors. Live inquiry inbox was empty before rollout.

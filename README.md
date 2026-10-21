@@ -98,16 +98,19 @@ POST payload: `name`, `email`, optional `phone`, `category` (a published service
 - `src/PageExperience.jsx` / `src/pages.css`: page introductions, chapter cards, transitions, and layout
 - `src/ContactForm.jsx`: backend-connected inquiry form
 - `src/Admin.jsx`: private inbox
-- `src/DesignScene.jsx`: eight palettes and five procedural 3D forms
+- `src/mechanicalStudies.js`: mechanical geometry, gear ratios, thread travel, toolpaths, and CAD studies
+- `src/DesignScene.jsx`: original rotating gear trains, threaded fasteners, machining, CAD, and exploded assemblies
 - `server/`: API, SQLite, validation, notification queue
 
 The source shop is empty and learning has no published schedule/prices. This backend supports inquiries for those areas; it does not invent inventory, payments, customer accounts, or an LMS.
 
 ## Cinematic motion and brand
 
-The displayed company name is SAMP; Ventures remains only in existing domain/social/repository identifiers. `src/useCinematicMotion.js` manages scroll choreography, viewport activity, pointer depth, and magnetic controls. `src/motion.css` adds continuous photo movement, scan overlays, layered atmospheric effects, floating cards, and moving typography. `src/DesignScene.jsx` and `src/studio.css` supply full-bleed sculptural backgrounds, using original flowing surfaces with environment-lit metallic materials rather than external videos. Scenes initialize as they approach the viewport, draw at up to 20 fps, and retain gradient fallbacks when WebGL is unavailable. Motion can be disabled with the hero control and respects the operating system reduced-motion preference. Images and other ambient effects pause outside the viewport; the 3D scene lowers rendering resolution on small screens and stops drawing while hidden or paused. Responsive checks cover widths from 320 to 1920 pixels, including 1366-pixel laptops.
+The displayed company name is SAMP; Ventures remains only in existing domain/social/repository identifiers. `src/useCinematicMotion.js` manages scroll choreography, viewport activity, pointer depth, and magnetic controls. `src/motion.css` adds continuous photo movement, scan overlays, layered atmospheric effects, floating cards, and moving typography. `src/DesignScene.jsx` and `src/studio.css` supply full-bleed sculptural backgrounds, using original mechanical assemblies with environment-lit steel and red components, plus blueprint grids, dimensions, and wireframe views. Scenes initialize as they approach the viewport, draw at up to 20 fps, and retain gradient fallbacks when WebGL is unavailable. Motion can be disabled with the hero control and respects the operating system reduced-motion preference. Images and other ambient effects pause outside the viewport; the 3D scene lowers rendering resolution on small screens and stops drawing while hidden or paused. Responsive checks cover widths from 320 to 1920 pixels, including 1366-pixel laptops.
 
 
 ## Public pages
 
 `/`, `/expertise`, `/approach`, `/research`, `/about`, `/learning`, `/products`, and `/contact` are separate documents with real navigation links, unique titles and descriptions, and direct-load support. The production server supplies metadata, canonical links, `/sitemap.xml`, `/robots.txt`, and an animated 404 page. Expertise accepts `?discipline=<service-id>` for shared links. The motion control persists across page navigation in the current browser tab. Unknown URLs return HTTP 404. `/admin` remains a private inbox.
+
+Mechanical motion checks: `node --test tests/mechanical.test.mjs` verifies gear speed ratios/directions, clockwise nut travel against thread pitch, closed CNC toolpaths, and prototype depth growth. These are illustrative engineering scenes, not a published product catalogue.

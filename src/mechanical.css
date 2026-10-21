@@ -1,0 +1,11 @@
+/* Steel, red components, and fine drafting lines: original mechanical motion studies. */
+.design-scene{background:radial-gradient(ellipse at 74% 44%,#293e4b 0%,#16232c 40%,#0d141b 78%)}
+.design-scene-precision,.design-scene-blueprint{background:radial-gradient(ellipse at 75% 42%,#213e51,#132633 45%,#0c171f 85%)}
+.design-scene-fasteners,.design-scene-assembly{background:radial-gradient(ellipse at 75% 45%,#374047,#1c2730 45%,#101820 80%)}
+.design-scene-machining,.design-scene-prototype{background:radial-gradient(ellipse at 75% 42%,#1e4149,#142c34 45%,#0d1a22 85%)}
+.design-scene-connection{background:radial-gradient(ellipse at 70% 45%,#2f4245,#172b30 45%,#0d191e 85%)}
+.hero .studio-scrim{background:linear-gradient(90deg,#0d141bf5,#0d141bd9 28%,#0d141b35 65%,#0d141b00)}
+.page-backdrop-shade{background:linear-gradient(90deg,#0d141bf5,#0d141bc9 35%,#0d141b33 70%)}
+.page-study{opacity:.6}.scene-caption{color:#d7e5ed}.scene-caption small{color:#a8bdc7}
+.design-scene[data-state=fallback]:before{inset:20% 10% 20% 52%;border-radius:50%;background:repeating-conic-gradient(#9dabb7 0deg 8deg,#546472 8deg 16deg);box-shadow:inset 0 0 0 35px #16242c,inset 0 0 0 37px #9dabb7;filter:none;transform:none}
+@media(max-width:800px){.page-backdrop-shade{background:linear-gradient(180deg,#0d141b66,#0d141bc9 50%,#0d141be6)}.hero .studio-scrim{background:linear-gradient(180deg,#0d141bdb,#0d141be0 30%,#0d141b66 55%,#0d141b11 80%,#0d141baa)}.design-scene[data-state=fallback]:before{inset:52% 10% 10% 10%}}

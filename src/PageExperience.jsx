@@ -10,7 +10,7 @@ export function PageHero({page}) {
    <p className="page-summary hero-intro">{page.description}</p>
    <a className="page-discover" href={page.key==='not-found'?'/':'#page-content'}>{page.key==='not-found'?'Return home':'Explore this chapter'}{page.key==='not-found'?<ArrowUpRight size={16}/>:<ArrowDown size={16}/>}</a>
   </div>
-  <div className="page-study" aria-hidden="true"><span>DESIGN IN MOTION</span><strong>{String(pages.findIndex(p=>p.key===page.key)+1).padStart(2,'0')}</strong><span>SAMP / {page.study}</span></div>
+  <div className="page-study" aria-hidden="true"><span>ENGINEERING IN MOTION</span><strong>{String(pages.findIndex(p=>p.key===page.key)+1).padStart(2,'0')}</strong><span>SAMP / {page.study}</span></div>
  </section>;
 }
 export function PageDirectory(){
