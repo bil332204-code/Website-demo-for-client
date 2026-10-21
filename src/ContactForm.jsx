@@ -31,7 +31,7 @@ export default function ContactForm({initialCategory='',compact=false}){
  <label>Tell us about your idea <span>*</span><textarea name="message" required rows={3} placeholder="The challenge, the ambition, and where you’d like to go…" minLength={10} maxLength={5000}/></label>
  {compact&&<label>Additional notes <small>optional</small><input name="notes" placeholder="Timelines, existing designs, or anything else we should know" maxLength={1000}/></label>}
  <div className="form-trap" aria-hidden="true"><label>Leave this field empty<input name="website" tabIndex={-1} autoComplete="off" maxLength={200}/></label></div>
- <label className="consent"><input type="checkbox" name="consent" required/> <span>I agree to be contacted by SAMP Ventures about this inquiry.</span></label>
+ <label className="consent"><input type="checkbox" name="consent" required/> <span>I agree to be contacted by SAMP about this inquiry.</span></label>
  {error&&<p className="form-error" role="alert">{error}</p>}
  <div className="form-bottom"><button className="button button-lime" type="submit" disabled={busy}>{busy?'Sending your inquiry…':'Send my inquiry'}{busy?<LoaderCircle size={17} className="loading-spinner"/>:<ArrowUpRight size={19}/>}</button><small>Delivered securely.<br/>Let’s build what’s next.</small></div>
  </fieldset></form>;

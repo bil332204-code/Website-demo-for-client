@@ -51,3 +51,7 @@ Source-domain images retained under `public/images/`:
 - `ai.jpg`: `/wp-content/uploads/2026/05/01_AI_card.jpg`
 
 Fonts are bundled through Fontsource (DM Sans and Manrope). The orbital hero is drawn procedurally; no third-party network requests are needed to render the site. Confirm client rights to source imagery, brand use, and final wording before public launch.
+
+## Client brand clarification
+
+The client clarified that the company display name is **SAMP**. The redesign now uses SAMP throughout visible branding, consent text, metadata, and the admin title. Existing source URLs, social handles, repository names, and email addresses retain their actual identifiers; the purchased domain is sampventures.tech.
