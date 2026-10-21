@@ -1,6 +1,6 @@
 # SAMP
 
-A cinematic SAMP engineering website with a Node.js/Express API, persistent SQLite inquiry storage, private admin inbox, and optional Gmail SMTP email notifications. React, Vite, Three.js, GSAP, and Lucide power the frontend. The source review is in [docs/SOURCE-AUDIT.md](docs/SOURCE-AUDIT.md).
+An eight-page cinematic SAMP engineering website with a Node.js/Express API, persistent SQLite inquiry storage, private admin inbox, and optional Gmail SMTP email notifications. React, Vite, Three.js, GSAP, and Lucide power the frontend. The source review is in [docs/SOURCE-AUDIT.md](docs/SOURCE-AUDIT.md).
 
 ## Local development
 
@@ -53,7 +53,7 @@ Resend is retained as an optional alternative: set `EMAIL_TRANSPORT=resend`, `RE
 
 ## Production deployment
 
-A Docker image and persistent-volume Compose configuration are prepared. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for temporary provider addresses, required runtime settings, and deployment status. Public hosting still requires a connected hosting account.
+A Docker image and persistent-volume Compose configuration are prepared. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for temporary provider addresses, required runtime settings, and deployment status. The site is deployed on Render’s free plan at https://sampventures.tech. Its local SQLite disk is ephemeral; use persistent storage for durable production inquiries.
 
 Deploy to a Node-capable host with a persistent writable disk; static-only hosting cannot run this API.
 
@@ -72,10 +72,10 @@ Run **one API process per SQLite database**. For multiple replicas/serverless en
 ```sh
 npm run test:api   # 16 real API/database/transport tests; temporary databases
 npm run build
-npm test          # 14 browser checks against an isolated full-stack server
+npm test          # browser checks against an isolated full-stack server
 ```
 
-The browser suite starts its own server with temporary data, a random administrator token, and disabled notifications, then removes the data. It covers real form submission, failure recovery, idempotent retry, admin sign-in/search/status/deletion, all nine service panels, navigation, image loading, reduced motion, and eleven viewport widths. It uses `/usr/bin/chromium`; override `CHROMIUM_PATH` if needed. `TEST_BASE_URL` optionally targets an existing instance but skips admin checks that require the isolated test token; this mode writes a test inquiry and should not target production.
+The browser suite starts its own server with temporary data, a random administrator token, and disabled notifications, then removes the data. It covers real form submission, failure recovery, idempotent retry, admin sign-in/search/status/deletion, all nine service panels, eight directly loadable pages, refresh and browser history, page metadata, sitemap/404 behavior, image loading, reduced motion, and eleven viewport widths on every page. It uses `/usr/bin/chromium`; override `CHROMIUM_PATH` if needed. `TEST_BASE_URL` optionally targets an existing instance but skips admin checks that require the isolated test token; this mode writes a test inquiry and should not target production.
 
 ## API
 
@@ -93,14 +93,21 @@ POST payload: `name`, `email`, optional `phone`, `category` (a published service
 ## Editing
 
 - `src/data.js`: service content and FAQ
-- `src/main.jsx`: main page and dialogs
+- `src/main.jsx`: shared navigation, route-specific content, and dialogs
+- `src/pages.js`: shared public paths, titles, descriptions, and scene variants
+- `src/PageExperience.jsx` / `src/pages.css`: page introductions, chapter cards, transitions, and layout
 - `src/ContactForm.jsx`: backend-connected inquiry form
 - `src/Admin.jsx`: private inbox
-- `src/DesignScene.jsx`: original full-width 3D motion studies (silk, tide, bloom)
+- `src/DesignScene.jsx`: eight palettes and five procedural 3D forms
 - `server/`: API, SQLite, validation, notification queue
 
 The source shop is empty and learning has no published schedule/prices. This backend supports inquiries for those areas; it does not invent inventory, payments, customer accounts, or an LMS.
 
 ## Cinematic motion and brand
 
-The displayed company name is SAMP; Ventures remains only in existing domain/social/repository identifiers. `src/useCinematicMotion.js` manages scroll choreography, viewport activity, pointer depth, and magnetic controls. `src/motion.css` adds continuous photo movement, scan overlays, layered atmospheric effects, floating cards, and moving typography. `src/DesignScene.jsx` and `src/studio.css` supply full-bleed sculptural backgrounds for the hero, research, and contact sections, using original flowing surfaces with environment-lit metallic materials rather than external videos. Scenes initialize as they approach the viewport, draw at up to 25 fps, and retain gradient fallbacks when WebGL is unavailable. Motion can be disabled with the hero control and respects the operating system reduced-motion preference. Images and other ambient effects pause outside the viewport; the 3D scene lowers rendering resolution on small screens and stops drawing while hidden or paused. Responsive checks cover widths from 320 to 1920 pixels, including 1366-pixel laptops.
+The displayed company name is SAMP; Ventures remains only in existing domain/social/repository identifiers. `src/useCinematicMotion.js` manages scroll choreography, viewport activity, pointer depth, and magnetic controls. `src/motion.css` adds continuous photo movement, scan overlays, layered atmospheric effects, floating cards, and moving typography. `src/DesignScene.jsx` and `src/studio.css` supply full-bleed sculptural backgrounds, using original flowing surfaces with environment-lit metallic materials rather than external videos. Scenes initialize as they approach the viewport, draw at up to 20 fps, and retain gradient fallbacks when WebGL is unavailable. Motion can be disabled with the hero control and respects the operating system reduced-motion preference. Images and other ambient effects pause outside the viewport; the 3D scene lowers rendering resolution on small screens and stops drawing while hidden or paused. Responsive checks cover widths from 320 to 1920 pixels, including 1366-pixel laptops.
+
+
+## Public pages
+
+`/`, `/expertise`, `/approach`, `/research`, `/about`, `/learning`, `/products`, and `/contact` are separate documents with real navigation links, unique titles and descriptions, and direct-load support. The production server supplies metadata, canonical links, `/sitemap.xml`, `/robots.txt`, and an animated 404 page. Expertise accepts `?discipline=<service-id>` for shared links. The motion control persists across page navigation in the current browser tab. Unknown URLs return HTTP 404. `/admin` remains a private inbox.

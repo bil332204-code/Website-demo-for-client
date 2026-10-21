@@ -17,7 +17,10 @@ try{
  docker('volume','create',volume);await start();
  assert.equal(docker('exec',name,'id','-u'),'1000');
  docker('exec',name,'test','!','-e','/app/.env');
- assert.match(await (await fetch(base)).text(),/SAMP Ventures/);
+ assert.match(await (await fetch(base)).text(),/SAMP —/);
+ for(const path of ['/expertise','/approach','/research','/about','/learning','/products','/contact'])assert.equal((await fetch(base+path)).status,200);
+ assert.equal((await fetch(base+'/missing-page')).status,404);
+ assert.ok((await (await fetch(base+'/sitemap.xml')).text()).includes('/learning'));
  assert.equal((await fetch(base+'/admin')).status,200);
  const key=randomUUID(),body={name:'Deployment Test',email:'deploy@example.com',category:'Product inquiry',message:'Container readiness test; this is temporary test data.',consent:true};
  const response=await fetch(base+'/api/inquiries',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':key,Origin:'https://deployment-check.example'},body:JSON.stringify(body)});

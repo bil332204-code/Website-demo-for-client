@@ -24,9 +24,11 @@ export default function useCinematicMotion(reduced, active, modal) {
    gsap.utils.toArray('.application-image, .founder-image').forEach(element => {
     gsap.fromTo(element, { '--scroll-y': '15px' }, { '--scroll-y': '-15px', ease: 'none', scrollTrigger: { trigger: element, start: 'top bottom', end: 'bottom top', scrub: 1.2 } });
    });
+   if(document.querySelector('.journey')) {
    gsap.from('.journey-step', { y: 36, opacity: 0, stagger: .16, duration: .8, ease: 'power3.out', clearProps: 'transform,opacity', scrollTrigger: { trigger: '.journey', start: 'top 88%', once: true } });
    gsap.fromTo('.journey', { '--journey-progress': 0 }, { '--journey-progress': 1, scrollTrigger: { trigger: '.journey', start: 'top 85%', end: 'bottom 45%', scrub: .8 } });
-   gsap.from('.learning-card', { x: compact ? 20 : 50, opacity: 0, stagger: .14, duration: 1, clearProps: 'transform,opacity', ease: 'power3.out', scrollTrigger: { trigger: '.learning-cards', start: 'top 90%', once: true } });
+   }
+   if(document.querySelector('.learning-cards')) gsap.from('.learning-card', { x: compact ? 20 : 50, opacity: 0, stagger: .14, duration: 1, clearProps: 'transform,opacity', ease: 'power3.out', scrollTrigger: { trigger: '.learning-cards', start: 'top 90%', once: true } });
    gsap.fromTo('.footer-wordmark', { xPercent: -3 }, { xPercent: 3, ease: 'none', scrollTrigger: { trigger: '.footer', start: 'top bottom', end: 'bottom bottom', scrub: 1 } });
   });
   const refresh = () => ScrollTrigger.refresh();

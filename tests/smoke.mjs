@@ -7,6 +7,7 @@ import { tmpdir } from 'node:os';
 import { join,resolve } from 'node:path';
 import { randomBytes } from 'node:crypto';
 import { once } from 'node:events';
+import { pages } from '../src/pages.js';
 let base=process.env.TEST_BASE_URL,server,store,tempDir;
 const token=randomBytes(32).toString('hex');
 if(!base){
@@ -32,10 +33,10 @@ try{
   const still=await page.screenshot({clip});await page.waitForTimeout(400);assert.deepEqual(await page.screenshot({clip}),still);
   await page.getByRole('button',{name:'Enable ambient motion'}).click();await page.locator('.hero .design-scene[data-state=playing]').waitFor();
  });
- await check('All nine disciplines show correct details',async()=>{const tabs=page.getByRole('tab');assert.equal(await tabs.count(),9);for(let i=0;i<9;i++){const tab=tabs.nth(i);await tab.click();assert.equal(await tab.getAttribute('aria-selected'),'true');const panel=page.getByRole('tabpanel');await panel.getByRole('button',{name:'Discover the possibilities'}).click();await page.getByRole('dialog').waitFor();assert.equal(await page.locator('.feature-list li').count(),5);await page.keyboard.press('Escape');assert.equal(await page.getByRole('dialog').count(),0);}});
+ await check('All nine disciplines show correct details',async()=>{await page.goto(base+'/expertise',{waitUntil:'networkidle'});const tabs=page.getByRole('tab');assert.equal(await tabs.count(),9);for(let i=0;i<9;i++){const tab=tabs.nth(i);await tab.click();assert.equal(await tab.getAttribute('aria-selected'),'true');const panel=page.getByRole('tabpanel');await panel.getByRole('button',{name:'Discover the possibilities'}).click();await page.getByRole('dialog').waitFor();assert.equal(await page.locator('.feature-list li').count(),5);await page.keyboard.press('Escape');assert.equal(await page.getByRole('dialog').count(),0);}});
  await check('Service tab keyboard navigation',async()=>{await page.getByRole('tab').first().click();await page.keyboard.press('ArrowDown');assert.equal(await page.getByRole('tab').nth(1).getAttribute('aria-selected'),'true');await page.keyboard.press('End');assert.equal(await page.getByRole('tab').last().getAttribute('aria-selected'),'true');});
  await check('Consultation handles API failures, preserves fields, and saves a receipt',async()=>{
-  await page.getByRole('button',{name:'Let’s talk',exact:true}).click();const dialog=page.getByRole('dialog');
+  await page.getByRole('button',{name:'Book a consultation',exact:true}).click();const dialog=page.getByRole('dialog');
   await dialog.getByRole('button',{name:'Send my inquiry'}).click();assert.equal(await dialog.getByRole('status').count(),0);
   await dialog.getByLabel('Your name').fill('Test Engineer');await dialog.getByLabel('Email address').fill('engineer@example.com');await dialog.getByLabel('What are you exploring?').selectOption({label:'Engineering analysis'});await dialog.getByLabel('Tell us about your idea').fill('We need structural analysis for our prototype assembly.');await dialog.getByRole('checkbox').check();
   const keys=[];const collect=req=>{if(req.url().endsWith('/api/inquiries')&&req.method()==='POST')keys.push(req.headers()['idempotency-key']);};page.on('request',collect);
@@ -46,14 +47,35 @@ try{
   if(store)assert.equal(store.db.prepare('SELECT name FROM inquiries WHERE id=?').get(receipt.id).name,'Test Engineer');
   await page.keyboard.press('Escape');
  });
- await check('Learning inquiries preselect the mentorship',async()=>{await page.getByRole('button',{name:/01 \/ MENTORSHIP SolidWorks/}).click();assert.equal(await page.getByRole('dialog').locator('select').inputValue(),'SolidWorks mentorship');await page.keyboard.press('Escape');});
- await check('Product catalogue accurately offers inquiries',async()=>{await page.getByRole('button',{name:'Explore products',exact:true}).click();const d=page.getByRole('dialog');await d.getByText('Our public product catalogue is not available yet.',{exact:false}).waitFor();await d.getByRole('button',{name:'Talk products with us'}).click();assert.equal(await page.getByRole('dialog').locator('select').inputValue(),'Product inquiry');await page.keyboard.press('Escape');});
- await check('FAQ opens and closes',async()=>{const button=page.getByRole('button',{name:'Do you work with startups and students?'});await button.click();assert.equal(await button.getAttribute('aria-expanded'),'true');await button.click();assert.equal(await button.getAttribute('aria-expanded'),'false');});
+ await check('Learning inquiries preselect the mentorship',async()=>{await page.goto(base+'/learning',{waitUntil:'networkidle'});await page.getByRole('button',{name:/01 \/ MENTORSHIP SolidWorks/}).click();assert.equal(await page.getByRole('dialog').locator('select').inputValue(),'SolidWorks mentorship');await page.keyboard.press('Escape');});
+ await check('Product catalogue accurately offers inquiries',async()=>{await page.goto(base+'/products',{waitUntil:'networkidle'});await page.getByText('Our public product catalogue is not available yet.',{exact:false}).waitFor();await page.getByRole('button',{name:'Talk products with us'}).click();assert.equal(await page.getByRole('dialog').locator('select').inputValue(),'Product inquiry');await page.keyboard.press('Escape');});
+ await check('FAQ opens and closes',async()=>{await page.goto(base+'/contact',{waitUntil:'networkidle'});const button=page.getByRole('button',{name:'Do you work with startups and students?'});await button.click();assert.equal(await button.getAttribute('aria-expanded'),'true');await button.click();assert.equal(await button.getAttribute('aria-expanded'),'false');});
  await check('All local images load and anchor targets exist',async()=>{for(const image of await page.locator('img').all()){await image.scrollIntoViewIfNeeded();await image.evaluate(i=>i.decode());}const invalid=await page.evaluate(()=>[...document.querySelectorAll('a[href^="#"]')].filter(a=>!document.getElementById(a.hash.slice(1))).map(a=>a.hash));assert.deepEqual(invalid,[]);});
+ await check('All eight pages support direct visits, refresh, unique metadata, backgrounds, and responsive content',async()=>{
+  const audit=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});audit.on('pageerror',e=>errors.push(e.message));
+  try{const titles=new Set();for(const route of pages){
+   const response=await audit.goto(base+route.path,{waitUntil:'networkidle'});assert.equal(response.status(),200);const html=await response.text();assert.ok(html.includes(route.title.replaceAll('&','&amp;')));assert.ok(html.includes('rel="canonical"'));
+   await audit.locator('.design-scene[data-state=still]').first().waitFor();assert.equal(await audit.locator('h1').count(),1);assert.equal(await audit.locator('.design-scene-'+route.variant).count(),1);titles.add(await audit.title());
+   if(route.key!=='home')assert.equal(await audit.locator('.header [aria-current=page]').getAttribute('href'),route.path);
+   for(const image of await audit.locator('img').all()){await image.scrollIntoViewIfNeeded();await image.evaluate(i=>i.decode());}
+   const invalid=await audit.evaluate(()=>[...document.querySelectorAll('a[href^="#"]')].filter(a=>!document.getElementById(a.hash.slice(1))).map(a=>a.hash));assert.deepEqual(invalid,[]);
+   for(const width of [1920,1440,1366,1024,820,768,600,430,390,360,320]){await audit.setViewportSize({width,height:900});assert.equal(await audit.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`Overflow on ${route.path} at ${width}`);}
+   await audit.setViewportSize({width:1440,height:1000});
+  }assert.equal(titles.size,8);const response=await audit.reload({waitUntil:'networkidle'});assert.equal(response.status(),200);assert.equal(new URL(audit.url()).pathname,'/contact');
+  }finally{await audit.close();}
+ });
+ await check('Navigation changes documents and browser history restores pages',async()=>{
+  await page.goto(base+'/');await page.locator('.header .navigation a[href="/about"]').click();await page.waitForURL(base+'/about');assert.equal(await page.locator('#page-title').count(),1);
+  await page.goBack({waitUntil:'networkidle'});assert.equal(new URL(page.url()).pathname,'/');await page.goForward({waitUntil:'networkidle'});assert.equal(new URL(page.url()).pathname,'/about');
+ });
+ await check('Unknown URLs return a useful 404 and sitemap lists public pages only',async()=>{
+  const response=await page.goto(base+'/missing-page',{waitUntil:'networkidle'});assert.equal(response.status(),404);await page.getByRole('link',{name:'Return home',exact:true}).waitFor();assert.equal(await page.locator('meta[name=robots]').getAttribute('content'),'noindex, nofollow');
+  const sitemap=await (await page.request.get(base+'/sitemap.xml')).text();assert.equal((sitemap.match(/<url>/g)||[]).length,8);assert.ok(!sitemap.includes('/admin'));assert.ok((await (await page.request.get(base+'/robots.txt')).text()).includes('Disallow: /admin'));
+ });
  await check('No horizontal overflow at desktop, tablet, mobile widths',async()=>{const fresh=await browser.newPage({viewport:{width:1366,height:768}});try{await fresh.goto(base,{waitUntil:'networkidle'});for(const width of [390,320,820]){await fresh.setViewportSize({width,height:844});assert.equal(await fresh.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`Unrevealed animations overflow at ${width}`);}}finally{await fresh.close();}for(const width of [1920,1440,1366,1024,820,768,600,430,390,360,320]){await page.setViewportSize({width,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`Overflow at ${width}`);}});
- await page.setViewportSize({width:390,height:844});
- await check('Mobile navigation, dropdown, and anchors work',async()=>{await page.evaluate(()=>window.scrollTo(0,0));await page.getByRole('button',{name:'Open menu'}).click();await page.getByRole('button',{name:'Expertise',exact:true}).click();await page.getByRole('link',{name:'AI & intelligent systems',exact:true}).click();assert.equal(await page.getByRole('button',{name:'Open menu'}).getAttribute('aria-expanded'),'false');assert.equal(await page.getByRole('tab').nth(3).getAttribute('aria-selected'),'true');});
- await check('Motion control pauses animation',async()=>{await page.getByRole('button',{name:'Pause ambient motion'}).click();assert.equal(await page.locator('html').getAttribute('data-motion'),'off');const animation=await page.locator('.marquee-track').evaluate(el=>getComputedStyle(el).animationName);assert.equal(animation,'none');});
+ await page.goto(base+'/',{waitUntil:'networkidle'});await page.setViewportSize({width:390,height:844});
+ await check('Mobile navigation, dropdown, and anchors work',async()=>{await page.evaluate(()=>window.scrollTo(0,0));await page.getByRole('button',{name:'Open menu'}).click();await page.getByRole('button',{name:'Browse engineering disciplines',exact:true}).click();await page.getByRole('link',{name:'AI & intelligent systems',exact:true}).click();await page.waitForURL('**/expertise?discipline=ai-intelligent-systems#expertise');assert.equal(await page.getByRole('button',{name:'Open menu'}).getAttribute('aria-expanded'),'false');assert.equal(await page.getByRole('tab').nth(3).getAttribute('aria-selected'),'true');});
+ await check('Motion control pauses animation',async()=>{await page.getByRole('button',{name:'Pause ambient motion'}).click();assert.equal(await page.locator('html').getAttribute('data-motion'),'off');await page.locator('.page-backdrop .design-scene[data-state=still]').waitFor();await page.goto(base+'/learning',{waitUntil:'networkidle'});assert.equal(await page.locator('html').getAttribute('data-motion'),'off');await page.locator('.page-backdrop .design-scene[data-state=still]').waitFor();});
  const reduced=await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce'});
  await check('Operating system reduced-motion preference is honored',async()=>{await reduced.goto(base,{waitUntil:'networkidle'});assert.equal(await reduced.locator('html').getAttribute('data-motion'),'off');await reduced.locator('.hero .design-scene[data-state=still]').waitFor();});
  await reduced.close();

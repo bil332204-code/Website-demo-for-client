@@ -2,8 +2,9 @@ import express from 'express';
 import helmet from 'helmet';
 import { rateLimit } from 'express-rate-limit';
 import { createHash, timingSafeEqual } from 'node:crypto';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { pages, pageForPath, notFound } from '../src/pages.js';
 import { inquirySchema, statusSchema, querySchema } from './validation.mjs';
 
 export function createApp({store,config,notifier}){
@@ -57,8 +58,25 @@ export function createApp({store,config,notifier}){
  });
  app.use('/api',(_req,res)=>res.status(404).json({error:'API route not found.'}));
  if(config.distPath&&existsSync(join(config.distPath,'index.html'))){
+  const template=readFileSync(join(config.distPath,'index.html'),'utf8');
+  const escape=value=>value.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+  const origin=(config.appOrigin||'https://sampventures.tech').replace(/\/$/,'');
+  const documentFor=(page,privatePage=false)=>template
+   .replace(/<title>[^<]*<\/title>/,`<title>${escape('SAMP — '+page.title)}</title>`)
+   .replace(/<meta name="description" content="[^"]*"\s*\/>/,`<meta name="description" content="${escape(page.description)}" />`)
+   .replace('</head>',`${privatePage||page.key==='not-found'?'<meta name="robots" content="noindex, nofollow" />':`<link rel="canonical" href="${escape(origin+page.path)}" />`}\n</head>`);
+  app.get('/robots.txt',(_req,res)=>res.type('text/plain').send(`User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api/\nSitemap: ${origin}/sitemap.xml\n`));
+  app.get('/sitemap.xml',(_req,res)=>res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${pages.map(page=>`<url><loc>${escape(origin+page.path)}</loc></url>`).join('')}</urlset>`));
   app.use(express.static(config.distPath,{index:false,maxAge:0,setHeaders(res,path){if(path.includes('/assets/'))res.set('Cache-Control','public, max-age=31536000, immutable');}}));
-  app.get(['/', '/admin'],(_req,res)=>{res.set('Cache-Control','no-cache');res.sendFile(join(config.distPath,'index.html'));});
+  app.get([...pages.map(page=>page.path),'/admin'],(req,res)=>{
+   res.set('Cache-Control','no-cache');
+   if(req.path.replace(/\/$/,'')==='/admin')return res.send(documentFor({title:'Private inquiry inbox',description:'SAMP administrator access.'},true));
+   const page=pageForPath(req.path);res.status(page===notFound?404:200).send(documentFor(page));
+  });
+  app.use((req,res,next)=>{
+   if(req.method!=='GET'||!req.accepts('html')||req.path.includes('.'))return next();
+   res.status(404).set('Cache-Control','no-cache').send(documentFor(notFound));
+  });
  }
  app.use((_req,res)=>res.status(404).send('Not found'));
  app.use((error,_req,res,_next)=>{

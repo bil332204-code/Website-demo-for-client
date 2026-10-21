@@ -106,3 +106,14 @@ The client clarified the display name is **SAMP**. The motion update includes mo
 Replaced the technical orbital hero and research diagram with three original real-time 3D motion studies: lavender/silver silk, teal waves, and warm sculptural folds. They sit behind the page content with contrast scrims and mobile-specific framing. No external video service or additional hosting cost is required. Scenes initialize near the viewport and stop drawing when offscreen, hidden, or paused. Browser coverage now verifies changing rendered frames and a stable paused frame, alongside the existing forms, admin, mobile, and reduced-motion checks.
 
 Validation: production build and all 15 browser checks pass, including eleven responsive widths and changing/still background frames. Focused checks also confirm WebGL context loss/recovery and the non-WebGL mobile fallback with a working consultation dialog. Live inquiry inbox was empty before rollout.
+
+
+## Multiple-page SAMP site
+
+The public site now uses eight separate document URLs: `/`, `/expertise`, `/approach`, `/research`, `/about`, `/learning`, `/products`, and `/contact`. Each inner page has its own full-screen 3D motion study, page introduction, active navigation, and next-chapter link. Service and mentorship inquiries retain the existing API. Product content accurately describes the catalogue as unavailable and offers custom-product inquiries.
+
+Production Express serves each route directly, including refreshes, with unique titles, descriptions, and canonical links. It also serves a public sitemap, robots policy, and a useful HTTP 404 document. The Docker runtime includes the shared page metadata module. Navigation uses normal document links with progressive cross-document transitions; motion preference persists in the browser tab.
+
+Verification covers the production container, all 16 API tests, eight direct page loads, browser history/refresh, eleven widths per page, 3D playback/pause, mentorship and service interactions, and admin workflows. The live inquiry inbox was empty before rollout. Hosting continues on Render’s free plan.
+
+Result: production build, all 18 browser checks, all 16 API checks, and the production container validation pass.

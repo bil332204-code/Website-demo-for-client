@@ -20,7 +20,7 @@ COPY --from=production-dependencies --chown=node:node /app/node_modules ./node_m
 COPY --from=build --chown=node:node /app/dist ./dist
 COPY --chown=node:node package.json ./
 COPY --chown=node:node server ./server
-COPY --chown=node:node src/data.js ./src/data.js
+COPY --chown=node:node src/data.js src/pages.js ./src/
 RUN mkdir -p /app/data && chown node:node /app/data && chmod 700 /app/data
 USER node
 EXPOSE 3001
