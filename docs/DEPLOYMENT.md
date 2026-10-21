@@ -63,3 +63,20 @@ In this restricted cloud build, existing network proxy routing and its trusted C
 - Creating a Docker web service with `plan: free` was rejected with HTTP 402: Render requires payment information at `https://dashboard.render.com/billing`.
 - No SAMP service was created. No public URL, custom-domain verification, or DNS targets have been provisioned.
 - The account owner must satisfy Render's billing prerequisite directly before this deployment can continue. No paid plan has been selected or authorized.
+
+## Deployment update: free service created
+
+After the account owner completed Render's billing prerequisite and explicitly selected free hosting, the service was created successfully:
+
+- Service: `samp-ventures` (`srv-dbcbg77f3r2c739gcn10`)
+- Public address: `https://samp-ventures.onrender.com`
+- Runtime: Docker; region: Singapore; compute plan: `free`; no persistent disk requested
+- Initial deployment: `dep-dbcbg7vf3r2c739gcotg`, reported `live` by Render
+- Deployed source: `98b9b8755e28ffb733348c2b83a1ef7540d30324`
+- Automatic deploys are disabled; future changes require an explicit deployment.
+- Admin access uses the private token already configured locally, transferred securely to Render's environment without logging it. Email notifications remain disabled.
+- `sampventures.tech` and `www.sampventures.tech` are registered with Render; `www` redirects to the apex. DNS verification is pending registrar changes.
+
+The free demo uses ephemeral SQLite storage and may sleep when idle. Stored inquiries may be lost on replacement/redeployment. No paid compute or disk was selected.
+
+The workspace network policy currently blocks direct requests to the new public site and Render's documentation. Render's own deployment status is verified; external browser/API validation has not yet been performed. Network additions for `render.com`, `samp-ventures.onrender.com`, `sampventures.tech`, and `www.sampventures.tech` are saved in the environment draft for review/save/publication. Once applied, rerun public HTTP and browser checks. Local full-stack and container checks passed earlier.
