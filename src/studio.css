@@ -1,0 +1,52 @@
+/* Full-bleed motion studies: content sits over an original, living 3D film. */
+.hero,.research,.contact{isolation:isolate;position:relative;overflow:hidden;background:#0f1018}
+.design-scene{position:absolute;inset:0;z-index:-3;pointer-events:none;overflow:hidden;background:radial-gradient(ellipse at 75% 38%,#39324b 0%,#1e1d2a 35%,#101118 75%)}
+.design-scene canvas{display:block;width:100%;height:100%;opacity:1;transition:opacity .8s}
+.design-scene:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#0c10121a 60%,#0c1012b3);pointer-events:none}
+.design-scene-tide{background:radial-gradient(ellipse at 75% 40%,#163d41,#101d23 45%,#10181c)}
+.design-scene-bloom{background:radial-gradient(ellipse at 20% 40%,#393b2e,#1b2521 50%,#101814)}
+.studio-scrim{position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,#101118f5 0%,#101118cc 30%,#10111825 62%,transparent 100%)}
+.hero{min-height:900px!important;padding-top:175px;background:#101118}
+.hero-content{position:relative;z-index:2;max-width:710px}
+.hero h1{font-size:clamp(80px,7.7vw,126px);letter-spacing:-.065em}
+.hero h1 em{background:none;color:#d7ccf4;-webkit-text-fill-color:#d7ccf4}
+.hero-intro .live-dot{background:#d7ccf4;box-shadow:0 0 14px #c9b4ed55}
+.hero-description{color:#bcbcc6}
+.hero-footnote{color:#a3a0ad;letter-spacing:1.7px}
+.hero-bottom{background:transparent}
+.scene-caption{position:absolute;right:6.1vw;bottom:155px;display:flex;gap:15px;align-items:center;color:#e6e0f0;z-index:2;font-size:10px;letter-spacing:2px}
+.scene-caption small{display:block;font-size:8px;color:#a6a0b1;margin-top:9px;letter-spacing:1.5px}
+.scene-caption-line{width:55px;height:1px;background:#ddd0ef8c}
+.scene-edition{margin-left:38px;color:#a9a3b4;font-size:9px}
+.research:before,.contact:before{display:none}
+.research .studio-scrim{background:linear-gradient(90deg,#101c22f2,#101c22ce 35%,#101c2230 78%)}
+.research .section-label,.research-layout,.contact .section-label,.contact-layout{position:relative;z-index:1}
+.research-visual{background:none;border:0;box-shadow:none}
+.research-scene-title{position:absolute;inset:15% 0 auto;text-align:center;color:#e6f5ef}
+.research-scene-title>span{font-size:9px;letter-spacing:3px;color:#a8d9d4}
+.research-scene-title strong{display:block;margin-top:24px;font:500 clamp(42px,5vw,72px)/1.1 Manrope,sans-serif;letter-spacing:-3px}
+.research-scene-title em{font-family:Georgia,serif;font-weight:400}
+.research-float{background:#102c2c94;backdrop-filter:blur(14px);border-color:#a4d8cf30;box-shadow:0 10px 30px #071c2229}
+.research-note{color:#c2e7df}
+.contact .studio-scrim{background:linear-gradient(90deg,#14201a40,#14201a99 38%,#14201af0 65%)}
+.contact-form-wrap{background:#14201add;backdrop-filter:blur(15px)}
+.design-scene[data-state=fallback]:before{content:'';position:absolute;inset:12% 8% 12% 45%;border-radius:45% 65% 38% 70%;background:linear-gradient(125deg,#7d719a,#e7d2df 48%,#54586c 52%,#d2b2aa);transform:rotate(-25deg);filter:blur(2px)}
+@media(min-width:1600px){.hero{min-height:980px!important}.hero-content{max-width:850px}}
+@media(max-width:1000px) and (min-width:801px){.hero h1{font-size:80px}.hero-content{max-width:620px}.scene-caption{right:4vw;bottom:145px}.scene-edition{display:none}}
+@media(max-width:800px){.hero{min-height:1000px!important;padding-top:145px}.hero-content{max-width:620px}.hero h1{font-size:clamp(65px,11vw,90px)}.hero .studio-scrim{background:linear-gradient(180deg,#101118c9 0%,#101118dd 27%,#10111866 50%,transparent 72%,#10111899 100%)}.scene-caption{bottom:130px;left:6vw;right:auto;font-size:9px}.scene-caption-line{width:25px}.scene-edition{margin-left:22px}.hero-bottom{bottom:35px}.research .studio-scrim{background:linear-gradient(180deg,#101c22ed,#101c22b3 45%,#101c2200 80%)}.contact .studio-scrim{background:linear-gradient(180deg,#14201a70,#14201ac9 50%,#14201af0 75%)}.research-scene-title{inset:22% 0 auto}.research-scene-title strong{font-size:58px}.hero-footnote{margin-top:25px;font-size:8px}}
+@media(max-width:600px){.hero{min-height:1040px!important;padding-top:132px;padding-bottom:360px}.hero h1{font-size:clamp(54px,12.2vw,73px);line-height:1.05}.hero-description{font-size:12px;max-width:330px}.hero-actions{margin-top:25px}.hero-footnote{letter-spacing:1px}.scene-caption{bottom:125px}.scene-caption small{font-size:7px}.hero-bottom{bottom:30px}.research-scene-title strong{font-size:48px}.design-scene-silk{background:radial-gradient(ellipse at 60% 65%,#39324b,#1e1d2a 50%,#101118 90%)}}
+@media(max-width:360px){.hero{padding-top:120px}.hero-actions{align-items:flex-start;gap:20px}.hero h1{font-size:54px}.hero-footnote{font-size:7px}.scene-edition{margin-left:6px}}
+/* Give the exploration scene an editorial layout, with clear space around its title. */
+.research-visual{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:center;gap:16px;height:460px}
+.research-visual:before{display:none}
+.research-scene-title{position:relative;inset:auto;grid-column:1/-1;margin-bottom:25px}
+.research-scene-title strong{font-size:clamp(42px,4.7vw,68px)}
+.research-float{position:relative;inset:auto!important;transform:none;min-width:0;padding:15px 10px;gap:9px;border-radius:2px}
+.research-float>div{white-space:normal;line-height:1.5}
+.research-float small{color:#a0bcb5;line-height:1.6;letter-spacing:.7px}
+.research-float .float-dot{margin-left:auto;flex-shrink:0}
+.research .studio-scrim{background:linear-gradient(90deg,#101c22fa,#101c22de 35%,#101c2240 78%)}
+@media(max-width:800px){.research-visual{height:auto;min-height:400px;gap:12px}.research-scene-title{inset:auto;margin-bottom:18px}.research-scene-title strong{font-size:48px}.research-float{padding:13px 9px}.research-float>div{font-size:8px}.research .studio-scrim{background:linear-gradient(180deg,#101c22f5,#101c22d9 45%,#101c2240 80%)}}
+.contact-copy>p{color:#bdcbbf}.contact-details a,.contact-details>span{color:#acbfaf}
+.design-scene[data-state=fallback] canvas{opacity:0}
+@media(max-width:800px){.contact .studio-scrim{background:linear-gradient(180deg,#14201abd,#14201adb 50%,#14201af0 75%)}}

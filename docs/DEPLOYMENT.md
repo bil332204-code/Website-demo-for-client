@@ -99,3 +99,10 @@ The custom domains are not yet ready over HTTPS: repeated public checks returned
 The custom domain is now operational: `https://sampventures.tech/api/health` returns 200, the homepage loads over HTTPS, and `https://www.sampventures.tech/` redirects to the apex. The previous certificate-provisioning limitation is resolved.
 
 The client clarified the display name is **SAMP**. The motion update includes moving images, pointer depth, scan overlays, layered atmospheric effects, orbital trails, floating research elements, a moving typography band, scroll choreography, and motion controls. Local production-build validation passes all 14 browser checks across eleven viewport widths, including an unrevealed-animation resize regression from laptop to phone. Hosting remains on the free plan without a persistent disk; SMTP remains disabled pending credentials.
+
+
+## Full-width cinematic background redesign
+
+Replaced the technical orbital hero and research diagram with three original real-time 3D motion studies: lavender/silver silk, teal waves, and warm sculptural folds. They sit behind the page content with contrast scrims and mobile-specific framing. No external video service or additional hosting cost is required. Scenes initialize near the viewport and stop drawing when offscreen, hidden, or paused. Browser coverage now verifies changing rendered frames and a stable paused frame, alongside the existing forms, admin, mobile, and reduced-motion checks.
+
+Validation: production build and all 15 browser checks pass, including eleven responsive widths and changing/still background frames. Focused checks also confirm WebGL context loss/recovery and the non-WebGL mobile fallback with a working consultation dialog. Live inquiry inbox was empty before rollout.

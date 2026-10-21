@@ -10,8 +10,6 @@ export default function useCinematicMotion(reduced, active, modal) {
   const context = gsap.context(() => {
    gsap.from('.hero-line > span', { yPercent: 115, rotate: 3, stagger: .14, duration: 1.25, ease: 'power4.out' });
    gsap.from('.hero-intro, .hero-actions, .hero-footnote', { opacity: 0, y: 24, duration: 1, stagger: .14, delay: .55 });
-   gsap.from('.hero-art', { opacity: 0, scale: .85, duration: 1.8, ease: 'power3.out', delay: .2 });
-   gsap.to('.hero-art', { yPercent: compact ? 5 : 16, rotation: 6, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1.4 } });
    gsap.utils.toArray('[data-reveal]').forEach((element, index) => {
     gsap.from(element, {
      y: compact ? 28 : 55, opacity: 0, rotateX: compact ? 0 : 5,

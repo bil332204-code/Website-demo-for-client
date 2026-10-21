@@ -96,11 +96,11 @@ POST payload: `name`, `email`, optional `phone`, `category` (a published service
 - `src/main.jsx`: main page and dialogs
 - `src/ContactForm.jsx`: backend-connected inquiry form
 - `src/Admin.jsx`: private inbox
-- `src/OrbitalScene.jsx`: procedural 3D hero
+- `src/DesignScene.jsx`: original full-width 3D motion studies (silk, tide, bloom)
 - `server/`: API, SQLite, validation, notification queue
 
 The source shop is empty and learning has no published schedule/prices. This backend supports inquiries for those areas; it does not invent inventory, payments, customer accounts, or an LMS.
 
 ## Cinematic motion and brand
 
-The displayed company name is SAMP; Ventures remains only in existing domain/social/repository identifiers. `src/useCinematicMotion.js` manages scroll choreography, viewport activity, pointer depth, and magnetic controls. `src/motion.css` adds continuous photo movement, scan overlays, layered atmospheric effects, floating cards, and moving typography. Motion can be disabled with the hero control and respects the operating system reduced-motion preference. Images and other ambient effects pause outside the viewport; the 3D scene lowers rendering resolution on small screens and stops drawing while hidden or paused. Responsive checks cover widths from 320 to 1920 pixels, including 1366-pixel laptops.
+The displayed company name is SAMP; Ventures remains only in existing domain/social/repository identifiers. `src/useCinematicMotion.js` manages scroll choreography, viewport activity, pointer depth, and magnetic controls. `src/motion.css` adds continuous photo movement, scan overlays, layered atmospheric effects, floating cards, and moving typography. `src/DesignScene.jsx` and `src/studio.css` supply full-bleed sculptural backgrounds for the hero, research, and contact sections, using original flowing surfaces with environment-lit metallic materials rather than external videos. Scenes initialize as they approach the viewport, draw at up to 25 fps, and retain gradient fallbacks when WebGL is unavailable. Motion can be disabled with the hero control and respects the operating system reduced-motion preference. Images and other ambient effects pause outside the viewport; the 3D scene lowers rendering resolution on small screens and stops drawing while hidden or paused. Responsive checks cover widths from 320 to 1920 pixels, including 1366-pixel laptops.

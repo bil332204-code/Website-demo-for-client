@@ -24,7 +24,14 @@ let checks=0;
 async function check(name,fn){await fn();checks++;console.log(`PASS ${name}`);}
 try{
  await page.goto(base,{waitUntil:'networkidle'});
- await check('Homepage and WebGL hero render',async()=>{await page.getByRole('heading',{level:1}).waitFor();await page.locator('canvas').waitFor();assert.match(await page.title(),/SAMP —/);assert.equal((await page.locator('.header .brand').innerText()).trim(),'SAMP');assert.doesNotMatch(await page.locator('body').innerText(),/SAMP\s+Ventures/);});
+ await check('Homepage and WebGL hero render',async()=>{await page.getByRole('heading',{level:1}).waitFor();await page.locator('.hero .design-scene[data-state=playing] canvas').waitFor();assert.match(await page.title(),/SAMP —/);assert.equal((await page.locator('.header .brand').innerText()).trim(),'SAMP');assert.doesNotMatch(await page.locator('body').innerText(),/SAMP\s+Ventures/);});
+ await check('Cinematic background changes frames and pauses cleanly',async()=>{
+  const clip={x:1100,y:200,width:200,height:220};
+  const first=await page.screenshot({clip});await page.waitForTimeout(400);assert.notDeepEqual(await page.screenshot({clip}),first);
+  await page.getByRole('button',{name:'Pause ambient motion'}).click();await page.locator('.hero .design-scene[data-state=still]').waitFor();
+  const still=await page.screenshot({clip});await page.waitForTimeout(400);assert.deepEqual(await page.screenshot({clip}),still);
+  await page.getByRole('button',{name:'Enable ambient motion'}).click();await page.locator('.hero .design-scene[data-state=playing]').waitFor();
+ });
  await check('All nine disciplines show correct details',async()=>{const tabs=page.getByRole('tab');assert.equal(await tabs.count(),9);for(let i=0;i<9;i++){const tab=tabs.nth(i);await tab.click();assert.equal(await tab.getAttribute('aria-selected'),'true');const panel=page.getByRole('tabpanel');await panel.getByRole('button',{name:'Discover the possibilities'}).click();await page.getByRole('dialog').waitFor();assert.equal(await page.locator('.feature-list li').count(),5);await page.keyboard.press('Escape');assert.equal(await page.getByRole('dialog').count(),0);}});
  await check('Service tab keyboard navigation',async()=>{await page.getByRole('tab').first().click();await page.keyboard.press('ArrowDown');assert.equal(await page.getByRole('tab').nth(1).getAttribute('aria-selected'),'true');await page.keyboard.press('End');assert.equal(await page.getByRole('tab').last().getAttribute('aria-selected'),'true');});
  await check('Consultation handles API failures, preserves fields, and saves a receipt',async()=>{
@@ -48,7 +55,7 @@ try{
  await check('Mobile navigation, dropdown, and anchors work',async()=>{await page.evaluate(()=>window.scrollTo(0,0));await page.getByRole('button',{name:'Open menu'}).click();await page.getByRole('button',{name:'Expertise',exact:true}).click();await page.getByRole('link',{name:'AI & intelligent systems',exact:true}).click();assert.equal(await page.getByRole('button',{name:'Open menu'}).getAttribute('aria-expanded'),'false');assert.equal(await page.getByRole('tab').nth(3).getAttribute('aria-selected'),'true');});
  await check('Motion control pauses animation',async()=>{await page.getByRole('button',{name:'Pause ambient motion'}).click();assert.equal(await page.locator('html').getAttribute('data-motion'),'off');const animation=await page.locator('.marquee-track').evaluate(el=>getComputedStyle(el).animationName);assert.equal(animation,'none');});
  const reduced=await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce'});
- await check('Operating system reduced-motion preference is honored',async()=>{await reduced.goto(base,{waitUntil:'networkidle'});assert.equal(await reduced.locator('html').getAttribute('data-motion'),'off');assert.equal(await reduced.locator('.research-orbit').first().evaluate(el=>getComputedStyle(el).animationName),'none');});
+ await check('Operating system reduced-motion preference is honored',async()=>{await reduced.goto(base,{waitUntil:'networkidle'});assert.equal(await reduced.locator('html').getAttribute('data-motion'),'off');await reduced.locator('.hero .design-scene[data-state=still]').waitFor();});
  await reduced.close();
  if(store)await check('Admin login, search, status updates, and deletion work end to end',async()=>{
   const admin=await browser.newPage({viewport:{width:1280,height:900}});admin.on('pageerror',e=>errors.push(e.message));
