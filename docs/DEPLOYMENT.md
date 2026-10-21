@@ -1,0 +1,57 @@
+# Public deployment
+
+The cloud environment's Publish action saves a development snapshot; it does not deploy a public website. This chat has no ChatGPT Sites deployment capability. A Node/container host can give this site a provider-issued HTTPS address without purchasing a domain.
+
+## Prepared package
+
+The Docker image serves the frontend and API together, runs as a non-root user, excludes local credentials/databases, and includes a database health check. Mount a persistent volume at `/app/data` and run **one replica**. Deployment requires access to an actual hosting account; no provider resources have been created and no public URL exists yet.
+
+Required runtime configuration:
+
+| Setting | Value |
+| --- | --- |
+| Container port | `3001`, or set `PORT` to the platform-assigned port |
+| `APP_ORIGIN` | The exact public HTTPS origin assigned by your host |
+| `ADMIN_TOKEN` | A private, randomly generated token of at least 32 bytes |
+| `DATABASE_PATH` | `/app/data/samp.sqlite` on the persistent volume |
+| `EMAIL_TRANSPORT` | `disabled` until Gmail is configured |
+| `TRUST_PROXY_HOPS` | Exact number of trusted reverse proxies; restrict direct backend access |
+| Health check | `GET /api/health` |
+
+Do not use a static-only host for the current backend. Providers with ephemeral disks require a database migration before storing real inquiries reliably. Persistent disks may require a paid hosting plan. No paid plan has been authorized or provisioned.
+
+## Container hosting
+
+Build from the repository root:
+
+```sh
+docker build -t samp-ventures:latest .
+```
+
+Supply runtime environment variables using the hosting provider's native secret settings. Do not bake `.env` or SMTP credentials into the image. Enable HTTPS at the provider ingress and set `APP_ORIGIN` to that public address. Place a persistent volume at `/app/data` with write access for container UID/GID 1000.
+
+For a server with Docker Compose and a separately configured HTTPS reverse proxy:
+
+```sh
+# Configure a private .env first; preserve any existing configuration.
+# Set APP_ORIGIN to the public address of the reverse proxy.
+docker compose up --build -d
+```
+
+Compose binds the application to loopback on port 8080 by default. A reverse proxy must terminate HTTPS and forward to that port. This is not itself a public hosting/tunneling service. The named volume keeps inquiries across container replacement; do not delete the volume when updating.
+
+## Gmail
+
+The selected SMTP sender is `bil332204@gmail.com` using `smtp.gmail.com:587` with STARTTLS. `INQUIRY_TO` remains `contact@sampventure.com`. Add a Google App Password as the private `SMTP_PASSWORD` variable, along with `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `MAIL_FROM`, and then set `EMAIL_TRANSPORT=smtp`. Never paste credentials into chat. SMTP remains disabled until configured; submitted inquiries still persist in the admin inbox. Verify that the chosen host permits outbound SMTP—some free hosting plans block it.
+
+## Before sharing
+
+Confirm the public homepage loads; submit a test inquiry; confirm its receipt and presence in `/admin`; replace/restart the instance and confirm persistence; test email separately once enabled. A successful local container check does not establish a live public deployment.
+
+## Validation and account access
+
+The production Docker image was built successfully in this cloud environment. `node tests/container.mjs` verified the non-root runtime, exclusion of private `.env`, frontend/admin routes, a real API submission, authenticated inquiry access, and persistence after replacing the container while retaining the test volume. The test removes its own temporary container/volume and does not send email. Local validation is not a public deployment.
+
+For managed deployment, Render is the recommended host. A personal `RENDER_API_KEY` requirement has been added to cloud environment settings, scoped to HTTPS requests to `api.render.com`. Create a Render account and key, then supply it in the secure settings field—not chat. The key permits account API actions, so use an account you control and revoke it when no longer needed. This does not create a service, authorize charges, or publish a live site. Choose between a temporary free demo with ephemeral inquiry storage and a separately priced persistent-storage plan before provisioning.
+
+In this restricted cloud build, existing network proxy routing and its trusted CA were supplied to Docker using standard build arguments and a BuildKit secret mount. Verification remained enabled; credentials and proxy certificates were not copied into the runtime image. A normal hosting builder with standard registry access can use the plain docker build command above.
