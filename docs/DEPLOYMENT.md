@@ -80,3 +80,16 @@ After the account owner completed Render's billing prerequisite and explicitly s
 The free demo uses ephemeral SQLite storage and may sleep when idle. Stored inquiries may be lost on replacement/redeployment. No paid compute or disk was selected.
 
 The workspace network policy currently blocks direct requests to the new public site and Render's documentation. Render's own deployment status is verified; external browser/API validation has not yet been performed. Network additions for `render.com`, `samp-ventures.onrender.com`, `sampventures.tech`, and `www.sampventures.tech` are saved in the environment draft for review/save/publication. Once applied, rerun public HTTP and browser checks. Local full-stack and container checks passed earlier.
+
+## DNS verification and live checks
+
+After the account owner added the registrar records, Render's API reports **verified** for both `sampventures.tech` and `www.sampventures.tech`. The `www` entry redirects to the apex. Render's official other-DNS-provider documentation confirms the apex A target `216.24.57.1`.
+
+Public verification completed on `https://samp-ventures.onrender.com`:
+
+- Database health endpoint returned HTTP 200.
+- Authenticated admin inbox responded successfully; unauthenticated access returned 401.
+- A temporary inquiry was created, read back, and an identical retry returned the same receipt. The temporary inquiry was deleted afterward. Notifications were confirmed disabled; no email was sent.
+- A live browser loaded the homepage and 3D canvas, opened the consultation dialog, and exercised mobile navigation with no page errors or horizontal overflow. Browser requests used Playwright's Node request context with the environment's supplied trusted CA because Chromium's own store lacked the proxy CA. TLS verification stayed enabled.
+
+The custom domains are not yet ready over HTTPS: repeated public checks returned an upstream TLS-handshake failure (HTTP 503 from the egress proxy), despite verified DNS. Render automatically provisions certificates after verification, but successful custom-domain HTTPS has not yet been observed. Leave the verified DNS records unchanged while provisioning completes. Recheck apex `/api/health` and the `www` redirect before claiming custom-domain readiness.
