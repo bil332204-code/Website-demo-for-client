@@ -1,7 +1,5 @@
-@view-transition{navigation:auto}
-::view-transition-old(root){animation:chapter-out .22s ease both}::view-transition-new(root){animation:chapter-in .5s ease both}
-@keyframes chapter-out{to{opacity:0;transform:translateY(-12px)}}@keyframes chapter-in{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-.site-page{position:relative;isolation:isolate}.inner-page{color:#eef1ee;background:#11161a}
+@keyframes chapter-arrival{from{opacity:0}to{opacity:1}}
+.site-page{position:relative;isolation:isolate;animation:chapter-arrival .6s ease both}.inner-page{color:#eef1ee;background:#11161a}
 .page-backdrop{position:fixed;inset:0;z-index:-2;pointer-events:none}.page-backdrop .design-scene{z-index:0}.page-backdrop-shade{position:absolute;inset:0;background:linear-gradient(90deg,#0d1419ed,#0d1419a6 45%,#0d141940);z-index:1}
 .page-hero{position:relative;min-height:690px;padding:145px 6.1vw 75px;border-bottom:1px solid #d8e8ea26;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
 .page-breadcrumb{display:flex;gap:12px;font-size:10px;color:#c1c7c7;letter-spacing:1.2px}.page-breadcrumb a{color:#edf1ed}.page-breadcrumb>span:first-of-type{color:var(--page-accent)}
@@ -35,7 +33,7 @@
 @media(max-width:800px){.page-hero{min-height:700px;padding:120px 6vw 65px}.page-hero-copy{margin-top:85px}.page-hero h1{font-size:clamp(44px,8.8vw,70px);letter-spacing:-3px}.page-summary{font-size:13px;max-width:420px}.page-study{right:6vw;top:115px;bottom:auto;gap:8px}.page-study strong{font-size:60px;letter-spacing:-4px}.page-study>span:first-child{font-size:6px}.page-study>span:last-child{display:none}.page-backdrop-shade{background:linear-gradient(180deg,#0d141970,#0d1419b8 50%,#0d1419db)}.navigation .expertise-nav{width:100%;justify-content:space-between}.navigation .expertise-nav>a{font-size:15px;padding:10px 0}.navigation .expertise-nav>button{padding:10px}.global-motion{margin-left:auto}.inner-page .contact-form-wrap{padding:24px}.inner-page .contact-layout{gap:45px}.next-chapter>a>svg{width:65px;height:65px}.product-paths{grid-template-columns:1fr}.product-paths>article{display:grid;grid-template-columns:50px 1fr;gap:15px}.product-paths>article>span{grid-column:1}.product-paths svg{grid-column:1;grid-row:2/4;margin:0}.product-paths h3{grid-column:2;grid-row:2}.product-paths p{grid-column:2;margin:0}.hero-bottom>span.hero-motion-note{display:none}.chapter-anchor{scroll-margin-top:75px}}
 @media(max-width:600px){.nav-wrap{gap:12px}.brand>span{font-size:21px;letter-spacing:2px}.brand>svg{width:26px;height:26px}.global-motion>span{display:none}.global-motion svg{width:15px}.nav-cta{font-size:9px;padding:9px;gap:12px}.page-hero{min-height:680px;padding-top:110px;padding-bottom:55px}.page-hero-copy{margin-top:100px}.page-hero h1{font-size:clamp(38px,10.3vw,59px);letter-spacing:-2px}.page-summary{max-width:330px;font-size:12px}.page-kicker{font-size:7px;letter-spacing:1.6px}.page-study{top:110px}.page-study strong{font-size:52px}.page-breadcrumb{font-size:9px}.directory-intro{display:block}.directory-intro h2{margin:25px 0;font-size:43px}.directory-intro>p{max-width:280px}.directory-grid{grid-template-columns:1fr;gap:18px;margin-top:35px}.chapter-card{min-height:370px;padding:25px}.chapter-sculpture{height:150px}.chapter-card h3{font-size:26px}.chapter-card>p{font-size:12px}.next-chapter>a{font-size:32px;letter-spacing:-1px}.next-chapter>a>svg{width:45px;height:45px;flex-shrink:0}.inner-page .contact-form-wrap{padding:20px 16px}.inner-page .learning-card{padding:24px}.inner-page .learning-note{font-size:6px}.inner-page .faq-answer p{font-size:12px}}
 html[data-motion=off] .page-discover svg,html[data-motion=off] .chapter-sculpture i{animation:none!important}
-@media(prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root){animation:none}.page-discover svg,.chapter-sculpture i{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.site-page{animation:none}.page-discover svg,.chapter-sculpture i{animation:none!important}}
 .header{background:#0d1419b3;backdrop-filter:blur(16px)}
 .expertise-nav>button,.global-motion{background:transparent;color:inherit}
 .global-motion{color:#bed0c5;padding:8px 0}
@@ -48,4 +46,4 @@ html[data-motion=off] .page-discover svg,html[data-motion=off] .chapter-sculptur
 .inner-page .learning-cards.motion-in-view .learning-card:after{animation-play-state:running}
 .inner-page .learning-card:nth-child(2):after{animation-delay:-2s}.inner-page .learning-card:nth-child(3):after{animation-delay:-4s}
 @keyframes mentorship-glow{0%,100%{opacity:.1}50%{opacity:1;box-shadow:inset 0 0 30px #b9df9820}}
-html[data-motion=off]::view-transition-old(root),html[data-motion=off]::view-transition-new(root){animation:none}
+html[data-motion=off] .site-page{animation:none}

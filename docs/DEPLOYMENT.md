@@ -112,8 +112,10 @@ Validation: production build and all 15 browser checks pass, including eleven re
 
 The public site now uses eight separate document URLs: `/`, `/expertise`, `/approach`, `/research`, `/about`, `/learning`, `/products`, and `/contact`. Each inner page has its own full-screen 3D motion study, page introduction, active navigation, and next-chapter link. Service and mentorship inquiries retain the existing API. Product content accurately describes the catalogue as unavailable and offers custom-product inquiries.
 
-Production Express serves each route directly, including refreshes, with unique titles, descriptions, and canonical links. It also serves a public sitemap, robots policy, and a useful HTTP 404 document. The Docker runtime includes the shared page metadata module. Navigation uses normal document links with progressive cross-document transitions; motion preference persists in the browser tab.
+Production Express serves each route directly, including refreshes, with unique titles, descriptions, and canonical links. It also serves a public sitemap, robots policy, and a useful HTTP 404 document. The Docker runtime includes the shared page metadata module. Navigation uses normal document links with page-entry animation and heading choreography; motion preference persists in the browser tab.
 
 Verification covers the production container, all 16 API tests, eight direct page loads, browser history/refresh, eleven widths per page, 3D playback/pause, mentorship and service interactions, and admin workflows. The live inquiry inbox was empty before rollout. Hosting continues on Render’s free plan.
 
 Result: production build, all 18 browser checks, all 16 API checks, and the production container validation pass.
+
+Live verification identified browser transition-abort errors with cross-document View Transitions during intercepted navigation. The effect now uses a CSS page-entry fade with existing GSAP heading choreography, which also avoids transition-abort promises on unsupported or interrupted navigations.
